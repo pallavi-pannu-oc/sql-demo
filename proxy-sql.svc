@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: mysql-db-pxc-db
+    app.kubernetes.io/name: percona-xtradb-cluster
+  name: mysql-db-pxc-db-proxysql-node
+  namespace: dkube-infra
+spec:
+  ports:
+  - name: mysql
+    protocol: TCP
+    port: 3306
+    targetPort: 3306
+    nodePort: 32740
+  - name: mysql-admin
+    nodePort: 32742
+    port: 33062
+    protocol: TCP
+    targetPort: 33062
+  selector:
+    app.kubernetes.io/component: proxysql
+    app.kubernetes.io/instance: mysql-db-pxc-db
+    app.kubernetes.io/name: percona-xtradb-cluster
+  sessionAffinity: None
+  type: NodePort
